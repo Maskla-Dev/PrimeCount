@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; connect-src *; style-src 'self' 'unsafe-inline'; img-src * data:">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./assets/styles/normalize.css" rel="stylesheet">
+    <link href="./assets/styles/css2.css" rel="stylesheet">
+    <link href="./assets/styles/index.css" rel="stylesheet">
+    <script src="./actions.js" defer></script>
+    <title>AlfaPlot</title>
+</head>
+
+<body>
+    <div id="root">
+        <div class="data-container">
+            <h1>Prime Counter</h1>
+            <div>
+                <form>
+                    <label for="mith">Prime numbers from 2 to </label>
+                    <input name="mith" id="mith" min="2" max="10000000" type="number" value="2" />
+                    <input id="plotter" type="button" value="Search">
+                </form>
+                <div id="progress" class="loader-wrapper">
+                    <div class="load-status">Waiting</div>
+                    <div class="loader-bar-wrapper">
+                        <div class="loader-bar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="graphics" class="data-container">
+            <h2>Graphics</h2>
+            <div>
+                <div id="plot-binary"></div>
+                <div class="page-controller-wrapper">
+                    <button class="prev-page"></button>
+                    <div>
+                        <span class="current-page">0</span>
+                        <span>/</span>
+                        <span class="pages">0</span>
+                    </div>
+                    <button class="next-page"></button>
+                </div>
+            </div>
+            <div>
+                <div id="plot-log-two"></div>
+                <div id="progress-merged" class="loader-wrapper">
+                    <div class="load-status">Waiting</div>
+                    <div class="loader-bar-wrapper">
+                        <div class="loader-bar"></div>
+                    </div>
+                </div>
+                <div class="page-controller-wrapper">
+                    <button class="prev-page"></button>
+                    <div>
+                        <span class="current-page">0</span>
+                        <span>/</span>
+                        <span class="pages">0</span>
+                    </div>
+                    <button class="next-page"></button>
+                </div>
+            </div>
+            <div>
+                <div id="plot-log-ten"></div>
+                <div id="progress-merged" class="loader-wrapper">
+                    <div class="load-status">Waiting</div>
+                    <div class="loader-bar-wrapper">
+                        <div class="loader-bar"></div>
+                    </div>
+                </div>
+                <div class="page-controller-wrapper">
+                    <button class="prev-page"></button>
+                    <div>
+                        <span class="current-page">0</span>
+                        <span>/</span>
+                        <span class="pages">0</span>
+                    </div>
+                    <button class="next-page"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
