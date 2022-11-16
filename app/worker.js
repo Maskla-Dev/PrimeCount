@@ -1,18 +1,36 @@
 const fs = require("fs");
 
+let max_per_page = 10000;
+let page_indexes = [];
+
 onmessage = (e) => {
     if (typeof e.data == "number") {
+        total_finded = 0;
         findPrimes(e.data)
+        postMessage({
+            activity: "done",
+            payload: {
+                value: total_finded
+            }
+        })
     }
 }
 
+let total_finded = 0;
+
 function findPrimes(STOP_NUMBER) {
     let prime_number_list = [2, 3, 5, 7];
-    let ones_count = [1, 2, 2, 3];
+    // let ones_count = [1, 2, 2, 3];
     let bitmask = 0b000;
     let exponent = 3;
-    openFiles(prime_number_list, ones_count);
+    openFiles(prime_number_list);
     for (let i = prime_number_list[prime_number_list.length - 1] + 1; i <= STOP_NUMBER; ++i) {
+        postMessage({
+            activity: "status-update",
+            payload: {
+                value: `${((i / STOP_NUMBER) * 100).toFixed(2)}%`
+            }
+        })
         bitmask = 0b000;
         exponent += (i > Math.pow(2, exponent)) ? 1 : 0;
         bitmask |= Number(isNumberEndingWithFive(i));
@@ -25,7 +43,7 @@ function findPrimes(STOP_NUMBER) {
             continue;
         if (isDivisibleByAnyPrevPrime(i))
             continue;
-        writeIntFile(i, countOnes(i, exponent));
+        writeIntFile(i);
     }
     closeFiles();
 }
@@ -77,18 +95,18 @@ function getNumberFromFile(fd, from, to) {
     return buffer;
 }
 
-function openFiles(prime_list, ones_counting) {
+function openFiles(prime_list) {
     guaranteeDir();
     fs.writeFileSync("./app/files/decimalset", "{");
     fs.writeFileSync("./app/files/binaryset", "{");
-    fs.writeFileSync("./app/files/count", "");
+    // fs.writeFileSync("./app/files/count", "");
     for (let number of prime_list) {
-        fs.appendFileSync("./app/files/decimalset", `{${number}},`);
-        fs.appendFileSync("./app/files/binaryset", `{${number.toString(2)}},`);
+        fs.appendFileSync("./app/files/decimalset", `${number},`);
+        fs.appendFileSync("./app/files/binaryset", `${number.toString(2)},`);
     }
-    for (let count of ones_counting) {
-        fs.appendFileSync("./app/files/count", `${count}\n`);
-    }
+    // for (let count of ones_counting) {
+    //     fs.appendFileSync("./app/files/count", `${count}\n`);
+    // }
 }
 
 function guaranteeDir() {
@@ -96,10 +114,11 @@ function guaranteeDir() {
         fs.mkdirSync("./app/files/", { recursive: true });
 }
 
-function writeIntFile(number, count) {
-    fs.appendFileSync("./app/files/decimalset", `{${number}},`);
-    fs.appendFileSync("./app/files/binaryset", `{${number.toString(2)}},`);
-    fs.appendFileSync("./app/files/count", `${count}\n`);
+function writeIntFile(number) {
+    fs.appendFileSync("./app/files/decimalset", `${number},`);
+    fs.appendFileSync("./app/files/binaryset", `${number.toString(2)},`);
+    // fs.appendFileSync("./app/files/count", `${count}\n`);
+    ++total_finded;
 }
 function closeFiles() {
     fs.appendFileSync("./app/files/decimalset", `}`);

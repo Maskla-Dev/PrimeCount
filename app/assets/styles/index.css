@@ -202,6 +202,10 @@ th {
   opacity: 1;
 }
 
+span{
+  color: #37e2ee;
+}
+
 .advice>span {
   color: #cb2664;
   font-weight: 700;
